@@ -2,8 +2,10 @@ import random
 from functools import reduce
 
 import pandas as pd
+
+### introduction to https://towardsdatascience.com/string-matching-with-fuzzywuzzy-e982c61f8a84
 from fuzzywuzzy import process
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz   
 
 import utils.gennumbers as gennumbers
 

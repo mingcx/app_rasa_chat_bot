@@ -1,0 +1,55 @@
+git init
+git add . 
+git commit -m "to peiqi"
+
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser 
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+
+-how to fetch remote branch
+$ git fetch <remote-repo> <remote-branch>:<local-branch>
+$ git checkout <local-branch>
+
+pip install -r requirements.txt
+python -m pip install -r requirements.txt
+pip freeze > requirements.txt
+
+virtualenv env
+.\env\Scripts\activate 
+
+# Add the remote, call it "upstream":
+
+    git remote add upstream https://github.com/whoever/whatever.git
+
+# Fetch all the branches of that remote into remote-tracking branches,
+# such as upstream/master:
+
+    git fetch upstream
+
+# Make sure that you're on your master branch:
+
+    git checkout master
+
+# Rewrite your master branch so that any commits of yours that
+# aren't already in upstream/master are replayed on top of that
+# other branch:
+
+    git rebase upstream/master
+
+
+# push to orgin 
+    git commit -m "notes of commit"
+    git push orgin/master
+
+
+
+
+SQL update issue Try:
+
+Edit -> IntelliSense -> Refresh Local Cache
+
+This should refresh the data cached by Intellisense to provide typeahead support and pre-execution error detection.
+
+
+this is how to fetch remote branch other than master to a local branch
+https://stackoverflow.com/questions/9537392/git-fetch-remote-branch
+git checkout --track origin/daves_branch

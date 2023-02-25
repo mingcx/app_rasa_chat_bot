@@ -4,9 +4,10 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 
-from rasa_nlu.model import Interpreter
-from rasa_nlu.config import RasaNLUConfig
+# from rasa_nlu.model import Interpreter
+# from rasa_nlu.config import RasaNLUConfig
 
 import utils.bot
 from utils.downloader import download_charts
@@ -17,10 +18,10 @@ model_path = model_dirs[-1]
 
 # define config
 args = {'pipeline': 'spacy_sklearn'}
-config = RasaNLUConfig(cmdline_args=args)
+# config = RasaNLUConfig(cmdline_args=args)
 
-# where `model_directory points to the folder the model is persisted in
-interpreter = Interpreter.load(model_path, config)
+# # where `model_directory points to the folder the model is persisted in
+# interpreter = Interpreter.load(model_path, config)
 
 # update chart data.. use back up data if error
 try:
@@ -32,15 +33,19 @@ except:
 # --------------------------------------------------
 
 # init app and add stylesheet
-app = dash.Dash()
-app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP],
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+    ]
+    )
+#app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 # init a list of the sessions conversation history
 conv_hist = []
 
 # app ui
 app.layout = html.Div([
-    html.H3('Search App Charts Bot Demo', style={'text-align': 'center'}),
+    html.H3('Product/Intermediate Chat', style={'text-align': 'center'}),
     html.Div([
         html.Div([
             html.Table([
@@ -64,8 +69,9 @@ app.layout = html.Div([
 # trigger bot response to user inputted message on submit button click
 @app.callback(
     Output(component_id='conversation', component_property='children'),
-    [Input(component_id='send_button', component_property='n_clicks')],
-    state=[State(component_id='msg_input', component_property='value')]
+    [Input(component_id='send_button', component_property='n_clicks'),
+    State(component_id='msg_input', component_property='value')],
+    prevent_initial_call=True
 )
 # function to add new user*bot interaction to conversation history
 def update_conversation(click, text):
@@ -74,11 +80,14 @@ def update_conversation(click, text):
     # dont update on app load
     if click > 0:
         # call bot with user inputted text
-        response, generic_response = utils.bot.respond(
-            text,
-            interpreter,
-            app_data_path
-        )
+        # response, generic_response = utils.bot.respond(
+        #     text,
+        #     interpreter,
+        #     app_data_path
+        # )
+
+        #customized
+        response, generic_response = ['chemcial1','chemical2','chemical3'],'fafeaf'
         # user message aligned left
         rcvd = [html.H5(text, style={'text-align': 'left'})]
         # bot response aligned right and italics
@@ -96,7 +105,8 @@ def update_conversation(click, text):
 
 @app.callback(
     Output(component_id='msg_input', component_property='value'),
-    [Input(component_id='conversation', component_property='children')]
+    [Input(component_id='conversation', component_property='children')],
+    prevent_initial_call=True
 )
 def clear_input(_):
     return ''
@@ -104,4 +114,4 @@ def clear_input(_):
 
 # run app
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug=True)
